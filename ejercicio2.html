@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Tareas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin-top: 50px;
+    }
+    
+    .tarea-lista {
+      border: 1px solid #ddd;
+      padding: 10px;
+      width: 300px;
+      margin-top: 10px;
+    }
+    .tarea {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      padding: 5px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+    }
+    .tarea.completedo {
+      text-decoration: line-through;
+      color: gray;
+    }
+    button {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lista de Tareas</h1>
+  <form id="tareaForm">
+    <input type="text" id="tareaInput" placeholder="Escribe una tarea..." required>
+    <select id="tareadificultad">
+      <option value="facil">Fácil</option>
+      <option value="dificil">Difícil</option>
+    </select>
+    <button type="submit">Agregar Tarea</button>
+  </form>
+
+  <h2>Tareas Fáciles</h2>
+  <div id="faciltareas" class="tarea-list"></div>
+
+  <h2>Tareas Difíciles</h2>
+  <div id="dificiltareas" class="tarea-list"></div>
+
+  <script>
+
+    const tareaForm = document.getElementById('tareaForm');
+    const tareaInput = document.getElementById('tareaInput');
+    const tareadificultad = document.getElementById('tareadificultad');
+    const faciltareasContainer = document.getElementById('faciltareas');
+    const dificiltareasContainer = document.getElementById('dificiltareas');
+
+    
+    tareaForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const tareaText = tareaInput.value;
+      const dificultad = tareadificultad.value;
+      agregarTarea(tareaText, dificultad);
+      tareaForm.reset();
+    });
+
+    
+    function agregarTarea(text, dificultad) {
+      const tarea = document.createElement('div');
+      tarea.className = 'tarea';
+      tarea.innerHTML = `
+        <span>${text}</span>
+        <div>
+          <button onclick="completetarea(this)">Completar</button>
+          <button onclick="removetarea(this)">Eliminar</button>
+        </div>
+      `;
+
+      if (dificultad === 'facil') {
+        faciltareasContainer.appendChild(tarea);
+      } else {
+        dificiltareasContainer.appendChild(tarea);
+      }
+    }
+
+   
+    function completetarea(button) {
+      const tarea = button.parentElement.parentElement;
+      tarea.classList.toggle('completedo');
+    }
+
+    
+    function removetarea(button) {
+      const tarea = button.parentElement.parentElement;
+      tarea.remove();
+    }
+  </script>
+</body>
+</html>
